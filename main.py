@@ -10,8 +10,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 # init
-proxy_url = 'https://129.153.172.40:3128'
-bot = Bot(token=API_TOKEN, proxy=proxy_url)
+bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
 
