@@ -1,8 +1,11 @@
 from asyncore import dispatcher
 import logging
 from aiogram import Bot, Dispatcher, executor, types
+import pickle
 
 API_TOKEN = '5220834594:AAEK0KPc7bTq_1YY89Wi2IydiZZb1ukUFyc'
+
+# БД
 
 
 # logging
@@ -25,16 +28,39 @@ def reply_btns():
     keyboard.add(types.InlineKeyboardButton(text='Ещё 🤩', callback_data='again'))
     return keyboard
 
+def newUser(chatid, username):
+    # data = [
+    #     {
+    #         'chatid' : 123123,
+    #         'username' : '@test'
+    #     }
+    # ]
+    # with open('bd.pickle', 'wb') as f:
+    #     pickle.dump(data, f)
+    #     return ''
+    with open('bd.pickle', 'rb') as f:
+        pickle_obj = pickle.load(f)
+        if(next((x for x in pickle_obj if x["chatid"] == chatid), 0) == 0):
+            print(next((x for x in pickle_obj if x["chatid"] == chatid), 0))
+            newData = {
+                'chatid' : chatid,
+                'username' : username
+            }
+            pickle_obj += [newData]
+            with open('bd.pickle', 'wb') as f:
+                pickle.dump(pickle_obj, f)
+                return 'Новый пользователь: ' + username
+        else:
+            return 'Пользователь существует'
+        
+    
+    
+
 
 # Асинки
 @dp.message_handler(commands=['start'])
 async def pong(message: types.Message):
-    await message.answer('Привет, этот бот отслыает котов, просто напишите cat или кот!\n\nРазработчик - @deadshumz')
-
-@dp.message_handler(lambda message: message.text == '1')
-async def add_data(message: types.Message):
-    user_data+=1
-    print(user_data)
+    await message.answer('Привет, этот бот отслыает котов, просто напишите cat или кот!\n\n ' + newUser(message.chat.id, '@' + message.from_user['username']) + '\n\nРазработчик - @deadshumz')
 
 @dp.message_handler()
 async def cat(message: types.Message):
