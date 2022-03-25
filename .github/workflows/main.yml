@@ -1,3 +1,4 @@
- - name: Hello world action
-    env:
-      BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+- name: Test
+    env: 
+        API_KEY: ${{ secrets.API_KEY }}
+        
