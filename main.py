@@ -3,6 +3,7 @@ import logging
 from aiogram import Bot, Dispatcher, executor, types
 import pickle
 import os
+from googletrans import Translator
 
 
 API_TOKEN = os.environ['API_KEY']
@@ -22,21 +23,19 @@ user_data = 0
 
 
 # Функции
+
+# Переводчик
+
+translator = Translator()
+
+# Переводчик - конец
+
 def reply_btns():
     keyboard = types.InlineKeyboardMarkup(row_width=1)
     keyboard.add(types.InlineKeyboardButton(text='Ещё 🤩', callback_data='again'))
     return keyboard
 
 def newUser(chatid, username):
-    # data = [
-    #     {
-    #         'chatid' : 123123,
-    #         'username' : '@test'
-    #     }
-    # ]
-    # with open('bd.pickle', 'wb') as f:
-    #     pickle.dump(data, f)
-    #     return ''
     with open('bd.pickle', 'rb') as f:
         pickle_obj = pickle.load(f)
         if(next((x for x in pickle_obj if x["chatid"] == chatid), 0) == 0):
@@ -48,12 +47,6 @@ def newUser(chatid, username):
             pickle_obj += [newData]
             with open('bd.pickle', 'wb') as f:
                 pickle.dump(pickle_obj, f)
-                return 'Новый пользователь: ' + username
-        else:
-            return 'Пользователь существует'
-        
-    
-    
 
 
 # Асинки
@@ -65,6 +58,8 @@ async def pong(message: types.Message):
 async def cat(message: types.Message):
     if(message.text.lower() == 'cat' or message.text.lower() == 'кот'):
         await bot.send_photo(chat_id=message.chat.id, photo='https://www.dogtime.com/assets/uploads/2011/01/file_23020_dachshund-dog-breed.jpg', caption=message.text, reply_markup=reply_btns())
+    else:
+        await message.answer(translator.translate(message.text, dest='en'))
 
 
 
