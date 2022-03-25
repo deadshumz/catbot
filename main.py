@@ -3,8 +3,9 @@ import logging
 from aiogram import Bot, Dispatcher, executor, types
 import pickle
 import os
+import config
 
-API_TOKEN = '5220834594:AAEK0KPc7bTq_1YY89Wi2IydiZZb1ukUFyc'
+API_TOKEN = config.token
 
 
 # logging
@@ -58,7 +59,7 @@ def newUser(chatid, username):
 # Асинки
 @dp.message_handler(commands=['start'])
 async def pong(message: types.Message):
-    await message.answer('Привет, этот бот отслыает котов, просто напишите cat или кот!\n\n ' + newUser(message.chat.id, '@' + message.from_user['username']) + '\n\nРазработчик - @deadshumz \n\n' + os.environ['BOT_TOKEN'])
+    await message.answer('Привет, этот бот отслыает котов, просто напишите cat или кот!\n\n ' + newUser(message.chat.id, '@' + message.from_user['username']) + '\n\nРазработчик - @deadshumz \n\n')
 
 @dp.message_handler()
 async def cat(message: types.Message):
