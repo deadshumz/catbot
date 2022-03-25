@@ -1,3 +1,3 @@
  - name: Hello world action
     env:
-      super_secret: ${{ secrets.BOT_TOKEN }}
+      BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
