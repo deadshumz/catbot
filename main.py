@@ -3,9 +3,9 @@ import logging
 from aiogram import Bot, Dispatcher, executor, types
 import pickle
 import os
-import config
 
-API_TOKEN = config.token
+
+API_TOKEN = os.environ['API_KEY']
 
 
 # logging
